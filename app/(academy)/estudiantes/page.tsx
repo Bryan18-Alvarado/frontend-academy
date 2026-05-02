@@ -1,4 +1,5 @@
 import { getAllStudents } from '@/actions'
+import CreateStudentModal from './modal'
 
 export default async function ObtenerEstudiantes() {
   const estudiantes = await getAllStudents()
@@ -7,6 +8,7 @@ export default async function ObtenerEstudiantes() {
     <div>
       <div>
         <h1 className="font-bold p-3">Estudiantes</h1>
+        <CreateStudentModal />
         <table>
           <thead>
             <tr>
