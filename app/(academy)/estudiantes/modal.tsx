@@ -15,15 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-
-interface FormData {
-  nombres: string
-  paterno: string
-  materno: string
-  direccion: string
-  sexo_id: number
-  etnia_id: number
-}
+import { Estudiantes } from '@/types'
 
 export default function CreateStudentModal() {
   const [loading, setLoading] = useState(false)
@@ -34,9 +26,9 @@ export default function CreateStudentModal() {
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm<FormData>()
+  } = useForm<Estudiantes>()
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Estudiantes) => {
     try {
       setLoading(true)
       await createStudent(data)
