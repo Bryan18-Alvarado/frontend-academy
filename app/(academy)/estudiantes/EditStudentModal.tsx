@@ -28,7 +28,12 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const { register, handleSubmit, reset } = useForm<Estudiantes>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<Estudiantes>()
 
   useEffect(() => {
     reset(student)
@@ -59,22 +64,34 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <Label>Nombres</Label>
-            <Input {...register('nombres')} />
+            <Input {...register('nombres', { required: true })} />
+            {errors.nombres && (
+              <p className="text-xs text-red-300">Este campo es requerido</p>
+            )}
           </div>
 
           <div>
             <Label>Paterno</Label>
-            <Input {...register('paterno')} />
+            <Input {...register('paterno', { required: true })} />
+            {errors.paterno && (
+              <p className="text-xs text-red-300">Este campo es requerido</p>
+            )}
           </div>
 
           <div>
             <Label>Materno</Label>
-            <Input {...register('materno')} />
+            <Input {...register('materno', { required: true })} />
+            {errors.materno && (
+              <p className="text-xs text-red-300">Este campo es requerido</p>
+            )}
           </div>
 
           <div>
             <Label>Dirección</Label>
-            <Input {...register('direccion')} />
+            <Input {...register('direccion', { required: true })} />
+            {errors.direccion && (
+              <p className="text-xs text-red-300">Este campo es requerido</p>
+            )}
           </div>
 
           <div className="flex justify-end gap-2">
