@@ -22,16 +22,15 @@ interface Props {
 export default function ViewStudentModal({ student, open, setOpen }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg bg-background border shadow-xl backdrop-blur-none">
+        {' '}
         <DialogHeader>
           <DialogTitle>Detalle del estudiante</DialogTitle>
           <DialogDescription>
             Información general del estudiante
           </DialogDescription>
         </DialogHeader>
-
         <Separator />
-
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-muted-foreground">Nombres</p>
@@ -53,9 +52,7 @@ export default function ViewStudentModal({ student, open, setOpen }: Props) {
             <p className="font-medium">{student.direccion}</p>
           </div>
         </div>
-
         <Separator />
-
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Sexo</span>
