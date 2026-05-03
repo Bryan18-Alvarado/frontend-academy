@@ -39,7 +39,7 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
       setLoading(true)
       await updateStudent(student.id, data)
 
-      router.refresh() // 🔥 clave
+      router.refresh()
 
       setOpen(false)
     } catch (error) {

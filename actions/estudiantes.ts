@@ -55,5 +55,21 @@ export async function updateStudent(id: number, student: Partial<Estudiantes>) {
     throw new Error('Error al actualizar estudiante')
   }
 
+  revalidatePath('/estudiantes')
+
   return data
+}
+
+export async function deleteStudent(id: number) {
+  const response = await fetch(`${URL}/estudiantes/${id}`, {
+    method: 'DELETE'
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al eliminar estudiante')
+  }
+
+  revalidatePath('/estudiantes')
+
+  return true
 }
