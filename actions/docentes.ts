@@ -51,3 +51,34 @@ export async function createDocente(docente: Partial<Docentes>) {
 
   return data
 }
+
+export async function updateDocente(id: number, docente: Partial<Docentes>) {
+  const response = await fetch(`${DOCENTES_URL}/docentes/${id}`, {
+    cache: 'no-store',
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(docente)
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error('Error al actualizar docente')
+  }
+  return data
+}
+
+export async function deleteDocente(id: number) {
+  const response = await fetch(`${DOCENTES_URL}/docentes/${id}`, {
+    cache: 'no-store',
+    method: 'DELETE'
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al eliminar docente')
+  }
+
+  return true
+}

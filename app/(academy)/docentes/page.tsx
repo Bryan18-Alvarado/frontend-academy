@@ -9,6 +9,7 @@ import {
   TableRow
 } from '@/components/ui/table'
 import CreateDocenteModal from './CreateDocentesModal'
+import DocenteActions from './DocenteActions'
 
 export default async function GetAllDocentes() {
   const docentes = await getAllDocentes()
@@ -75,7 +76,7 @@ export default async function GetAllDocentes() {
                     {doc.sexo_id}
                   </TableCell>
                   <TableCell>
-                    {/* <StudentActions student={est} />{' '} */}
+                    <DocenteActions docente={doc} />
                   </TableCell>
                 </TableRow>
               ))}
