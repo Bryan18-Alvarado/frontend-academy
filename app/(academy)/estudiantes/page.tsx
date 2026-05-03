@@ -1,5 +1,5 @@
 import { getAllStudents } from '@/actions'
-import CreateStudentModal from './modal'
+import CreateStudentModal from './CreateStudentModal'
 
 import {
   Table,
@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import StudentActions from './studentActions'
 
 export default async function ObtenerEstudiantes() {
   const estudiantes = await getAllStudents()
@@ -29,6 +30,7 @@ export default async function ObtenerEstudiantes() {
                 <TableHead>Paterno</TableHead>
                 <TableHead>Materno</TableHead>
                 <TableHead>Dirección</TableHead>
+                <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
 
@@ -52,6 +54,9 @@ export default async function ObtenerEstudiantes() {
 
                   <TableCell className="py-4 text-muted-foreground">
                     {est.direccion}
+                  </TableCell>
+                  <TableCell>
+                    <StudentActions student={est} />{' '}
                   </TableCell>
                 </TableRow>
               ))}
