@@ -15,10 +15,12 @@ import {
 
 import { deleteStudent } from '@/actions'
 import { Button } from '@/components/ui/button'
-import EditStudentModal from './editStudentModal'
+import EditStudentModal from './EditStudentModal'
+import ViewStudentModal from './ViewStudentModal'
 
 export default function StudentActions({ student }: { student: Estudiantes }) {
   const [open, setOpen] = useState(false)
+  const [openView, setOpenView] = useState(false)
   const router = useRouter()
 
   const handleDelete = async () => {
@@ -65,6 +67,9 @@ export default function StudentActions({ student }: { student: Estudiantes }) {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="bg-background border shadow-md">
+          <DropdownMenuItem onClick={() => setOpenView(true)}>
+            Ver
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             Editar
           </DropdownMenuItem>
@@ -76,6 +81,11 @@ export default function StudentActions({ student }: { student: Estudiantes }) {
       </DropdownMenu>
 
       <EditStudentModal student={student} open={open} setOpen={setOpen} />
+      <ViewStudentModal
+        student={student}
+        open={openView}
+        setOpen={setOpenView}
+      />
     </>
   )
 }

@@ -19,9 +19,22 @@ export async function getAllStudents(): Promise<Estudiantes[]> {
   console.error('error al obtener la data:', data)
   return []
 }
+export async function getOneStudent(id: number) {
+  const response = await fetch(`${URL}/estudiantes/${id}`, {
+    cache: 'no-store'
+  })
+
+  if (!response.ok) {
+    throw new Error('Error al obtener estudiante')
+  }
+
+  const data = await response.json()
+  return data.data
+}
 
 export async function createStudent(student: Partial<Estudiantes>) {
   const response = await fetch(`${URL}/estudiantes`, {
+    cache: 'no-store',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -42,6 +55,7 @@ export async function createStudent(student: Partial<Estudiantes>) {
 
 export async function updateStudent(id: number, student: Partial<Estudiantes>) {
   const response = await fetch(`${URL}/estudiantes/${id}`, {
+    cache: 'no-store',
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -62,6 +76,7 @@ export async function updateStudent(id: number, student: Partial<Estudiantes>) {
 
 export async function deleteStudent(id: number) {
   const response = await fetch(`${URL}/estudiantes/${id}`, {
+    cache: 'no-store',
     method: 'DELETE'
   })
 

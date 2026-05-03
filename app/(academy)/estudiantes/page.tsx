@@ -1,5 +1,5 @@
 import { getAllStudents } from '@/actions'
-import CreateStudentModal from './modal'
+import CreateStudentModal from './CreateStudentModal'
 
 import {
   Table,
