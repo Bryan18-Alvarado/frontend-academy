@@ -12,6 +12,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 
+import { createStudentAvatar } from '@/actions/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,6 +21,7 @@ import { Estudiantes } from '@/types'
 export default function CreateStudentModal() {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const [avatar, setAvatar] = useState<File | null>(null)
 
   const {
     register,
@@ -31,11 +33,19 @@ export default function CreateStudentModal() {
   const onSubmit = async (data: Estudiantes) => {
     try {
       setLoading(true)
-      await createStudent(data)
+
+      const student = await createStudent(data)
+
+      if (avatar) {
+        await createStudentAvatar(student.id, avatar)
+      }
+
       reset()
       setOpen(false)
+
+      window.location.reload()
     } catch (error) {
-      console.error('Error al crear estudiante:', error)
+      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -53,6 +63,15 @@ export default function CreateStudentModal() {
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-1">
+            <Label>Avatar</Label>
+
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files?.[0] ?? null)}
+            />
+          </div>
           <div className="space-y-1">
             <Label>Nombres</Label>
             <Input {...register('nombres', { required: true })} />

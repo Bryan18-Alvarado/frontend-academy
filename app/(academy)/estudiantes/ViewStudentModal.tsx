@@ -1,5 +1,8 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import Swal from 'sweetalert2'
+
 import { Estudiantes } from '@/types'
 
 import {
@@ -10,7 +13,10 @@ import {
   DialogTitle
 } from '@/components/ui/dialog'
 
+import { deleteStudentAvatar } from '@/actions/avatar'
+import StudentAvatar from '@/components/students/StudentAvatar'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
 interface Props {
@@ -20,17 +26,64 @@ interface Props {
 }
 
 export default function ViewStudentModal({ student, open, setOpen }: Props) {
+  const router = useRouter()
+
+  const handleDeleteAvatar = async () => {
+    setOpen(false)
+
+    const result = await Swal.fire({
+      title: '¿Eliminar avatar?',
+      text: 'La imagen será eliminada permanentemente',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    })
+
+    if (!result.isConfirmed) return
+
+    try {
+      await deleteStudentAvatar(student.id)
+
+      await Swal.fire({
+        title: 'Avatar eliminado',
+        icon: 'success'
+      })
+
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-lg bg-background border shadow-xl backdrop-blur-none">
-        {' '}
+      <DialogContent className="sm:max-w-lg bg-background border shadow-xl">
         <DialogHeader>
           <DialogTitle>Detalle del estudiante</DialogTitle>
+
           <DialogDescription>
             Información general del estudiante
           </DialogDescription>
         </DialogHeader>
+
         <Separator />
+
+        <div className="flex flex-col items-center gap-4 py-2">
+          <StudentAvatar
+            id={student.id}
+            nombres={student.nombres}
+            paterno={student.paterno}
+            size="h-28 w-28"
+          />
+
+          <Button variant="destructive" size="sm" onClick={handleDeleteAvatar}>
+            Eliminar avatar
+          </Button>
+        </div>
+
+        <Separator />
+
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-muted-foreground">Nombres</p>
@@ -52,15 +105,19 @@ export default function ViewStudentModal({ student, open, setOpen }: Props) {
             <p className="font-medium">{student.direccion}</p>
           </div>
         </div>
+
         <Separator />
+
         <div className="flex items-center gap-4">
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Sexo</span>
+
             <Badge variant="secondary">{student.sexo_id}</Badge>
           </div>
 
           <div className="flex flex-col gap-1">
             <span className="text-xs text-muted-foreground">Etnia</span>
+
             <Badge variant="secondary">{student.etnia_id}</Badge>
           </div>
         </div>

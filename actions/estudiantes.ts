@@ -9,16 +9,19 @@ export async function getAllStudents(): Promise<Estudiantes[]> {
     cache: 'no-store'
   })
 
+  const data = await response.json()
+
   if (!response.ok) {
     throw new Error('Error al obtener los estudiantes')
   }
 
-  const data = await response.json()
+  if (Array.isArray(data)) return data
 
   if (Array.isArray(data?.data)) return data.data
-  console.error('error al obtener la data:', data)
+
   return []
 }
+
 export async function getOneStudent(id: number) {
   const response = await fetch(`${URL}/estudiantes/${id}`, {
     cache: 'no-store'

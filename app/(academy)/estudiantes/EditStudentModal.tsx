@@ -16,6 +16,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+
+import { updateStudentAvatar } from '@/actions/avatar'
+import StudentAvatar from '@/components/students/StudentAvatar'
 import { Estudiantes } from '@/types'
 
 interface Props {
@@ -26,6 +29,8 @@ interface Props {
 
 export default function EditStudentModal({ student, open, setOpen }: Props) {
   const [loading, setLoading] = useState(false)
+  const [avatar, setAvatar] = useState<File | null>(null)
+
   const router = useRouter()
 
   const {
@@ -42,11 +47,16 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
   const onSubmit = async (data: Estudiantes) => {
     try {
       setLoading(true)
+
       await updateStudent(student.id, data)
 
-      router.refresh()
+      if (avatar) {
+        await updateStudentAvatar(student.id, avatar)
+      }
 
       setOpen(false)
+
+      window.location.reload()
     } catch (error) {
       console.error(error)
     } finally {
@@ -61,10 +71,35 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
           <DialogTitle>Editar estudiante</DialogTitle>
         </DialogHeader>
 
+        <div className="flex justify-center">
+          <StudentAvatar
+            id={student.id}
+            nombres={student.nombres}
+            paterno={student.paterno}
+            size="h-24 w-24"
+          />
+        </div>
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
+            <Label>Avatar</Label>
+
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files?.[0] ?? null)}
+            />
+          </div>
+
+          <div>
             <Label>Nombres</Label>
-            <Input {...register('nombres', { required: true })} />
+
+            <Input
+              {...register('nombres', {
+                required: true
+              })}
+            />
+
             {errors.nombres && (
               <p className="text-xs text-red-300">Este campo es requerido</p>
             )}
@@ -72,7 +107,13 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
 
           <div>
             <Label>Paterno</Label>
-            <Input {...register('paterno', { required: true })} />
+
+            <Input
+              {...register('paterno', {
+                required: true
+              })}
+            />
+
             {errors.paterno && (
               <p className="text-xs text-red-300">Este campo es requerido</p>
             )}
@@ -80,7 +121,13 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
 
           <div>
             <Label>Materno</Label>
-            <Input {...register('materno', { required: true })} />
+
+            <Input
+              {...register('materno', {
+                required: true
+              })}
+            />
+
             {errors.materno && (
               <p className="text-xs text-red-300">Este campo es requerido</p>
             )}
@@ -88,14 +135,46 @@ export default function EditStudentModal({ student, open, setOpen }: Props) {
 
           <div>
             <Label>Dirección</Label>
-            <Input {...register('direccion', { required: true })} />
+
+            <Input
+              {...register('direccion', {
+                required: true
+              })}
+            />
+
             {errors.direccion && (
               <p className="text-xs text-red-300">Este campo es requerido</p>
             )}
           </div>
 
+          <div>
+            <Label>Sexo ID</Label>
+
+            <Input
+              type="number"
+              {...register('sexo_id', {
+                valueAsNumber: true
+              })}
+            />
+          </div>
+
+          <div>
+            <Label>Etnia ID</Label>
+
+            <Input
+              type="number"
+              {...register('etnia_id', {
+                valueAsNumber: true
+              })}
+            />
+          </div>
+
           <div className="flex justify-end gap-2">
-            <Button type="button" onClick={() => setOpen(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+            >
               Cancelar
             </Button>
 
