@@ -1,7 +1,7 @@
 'use client'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { getStudentAvatar } from '@/helper/getStudent.helper'
+import { useStudentAvatar } from '@/hooks/useStudentAvatar'
 
 interface Props {
   id: number
@@ -16,13 +16,15 @@ export default function StudentAvatar({
   paterno,
   size = 'h-20 w-20'
 }: Props) {
+  const avatarSrc = useStudentAvatar(id)
+
   return (
     <Avatar className={size}>
-      <AvatarImage src={getStudentAvatar(id)} alt={`${nombres} ${paterno}`} />
+      <AvatarImage src={avatarSrc} alt={`${nombres} ${paterno}`} />
 
       <AvatarFallback>
-        {nombres[0]}
-        {paterno[0]}
+        {nombres?.[0]}
+        {paterno?.[0]}
       </AvatarFallback>
     </Avatar>
   )
